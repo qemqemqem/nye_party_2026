@@ -21,6 +21,17 @@ class TimeMachine {
         this.facts = {};
         this.isInitialized = false;
         
+        // Scheduled automatic time travel (hour -> yearKey)
+        this.schedule = {
+            20: 1,  // 8pm  → 2025
+            21: 2,  // 9pm  → 1969
+            22: 3,  // 10pm → 1751
+            23: 4,  // 11pm → 423 BCE
+            0:  5,  // Midnight → 2026
+            12: 4   // Noon → 423 BCE (testing)
+        };
+        this.lastScheduledHour = null; // Track which hour we last triggered
+        
         // DOM elements
         this.yearValue = document.getElementById('year-value');
         this.yearEra = document.getElementById('year-era');
@@ -205,8 +216,8 @@ class TimeMachine {
             this.yearEra.style.opacity = '1';
         }
         
-        // Update status
-        this.statusText.textContent = 'TEMPORAL COORDINATES LOCKED';
+        // Update status based on current time
+        this.updateStatusText(new Date().getMinutes());
         
         // Load slideshow for this year
         const mediaList = this.manifest[yearConfig.folder] || [];
@@ -272,7 +283,29 @@ class TimeMachine {
         // Update every second
         setInterval(() => this.updateClock(), 1000);
         
+        // Sync year display every 30 seconds (fixes glitch effect corruption)
+        setInterval(() => this.syncYearDisplay(), 30000);
+        
         console.log('🕐 Clock started');
+    }
+    
+    /**
+     * Sync year display to current state
+     * Fixes display corruption from glitch text scramble effects
+     */
+    syncYearDisplay() {
+        const yearConfig = this.years[this.currentYearKey];
+        if (!yearConfig) return;
+        
+        // Update the display elements to match current state
+        this.yearValue.textContent = yearConfig.year;
+        this.yearEra.textContent = yearConfig.era;
+        
+        // Also update the stored original text so glitch effects use correct values
+        this.yearValue.dataset.originalText = yearConfig.year;
+        this.yearEra.dataset.originalText = yearConfig.era;
+        
+        console.log(`🔄 Year display synced: ${yearConfig.display}`);
     }
     
     /**
@@ -280,19 +313,106 @@ class TimeMachine {
      */
     updateClock() {
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const seconds = now.getSeconds().toString().padStart(2, '0');
-        
-        this.clockTime.textContent = `${hours}:${minutes}:${seconds}`;
+        const currentMinutes = now.getMinutes();
+        const currentSeconds = now.getSeconds();
         
         // Check if we're within 10 minutes of the hour (minutes 50-59)
-        const isCountdownMode = now.getMinutes() >= 50;
+        const isCountdownMode = currentMinutes >= 50;
         
         if (isCountdownMode) {
+            // Show countdown to the hour
+            const minutesRemaining = 59 - currentMinutes;
+            const secondsRemaining = 60 - currentSeconds;
+            
+            // Handle the 60 seconds rollover
+            const displayMinutes = secondsRemaining === 60 ? minutesRemaining + 1 : minutesRemaining;
+            const displaySeconds = secondsRemaining === 60 ? 0 : secondsRemaining;
+            
+            this.clockTime.textContent = `00:${displayMinutes.toString().padStart(2, '0')}:${displaySeconds.toString().padStart(2, '0')}`;
             this.clockContainer.classList.add('countdown-mode');
         } else {
+            // Show current time
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = currentMinutes.toString().padStart(2, '0');
+            const seconds = currentSeconds.toString().padStart(2, '0');
+            
+            this.clockTime.textContent = `${hours}:${minutes}:${seconds}`;
             this.clockContainer.classList.remove('countdown-mode');
+        }
+        
+        // Update status text based on time of hour
+        this.updateStatusText(currentMinutes);
+        
+        // Check for scheduled automatic time travel
+        this.checkScheduledTravel(now.getHours());
+    }
+    
+    /**
+     * Check if we should trigger automatic time travel based on schedule
+     */
+    checkScheduledTravel(currentHour) {
+        // Skip if wormhole is already active
+        if (wormholeManager.isRunning()) return;
+        
+        // Check if this hour has a scheduled destination
+        const scheduledYearKey = this.schedule[currentHour];
+        if (scheduledYearKey === undefined) {
+            // No schedule for this hour, reset tracker
+            this.lastScheduledHour = null;
+            return;
+        }
+        
+        // Skip if we already triggered for this hour
+        if (this.lastScheduledHour === currentHour) return;
+        
+        // Skip if we're already at the destination
+        if (this.currentYearKey === scheduledYearKey) {
+            this.lastScheduledHour = currentHour;
+            return;
+        }
+        
+        // Trigger automatic time travel!
+        console.log(`🕐 Scheduled time travel triggered: hour ${currentHour} → year key ${scheduledYearKey}`);
+        this.lastScheduledHour = currentHour;
+        this.initiateAutomaticTimeTravel(scheduledYearKey);
+    }
+    
+    /**
+     * Initiate automatic time travel (no spacebar required)
+     */
+    async initiateAutomaticTimeTravel(yearKey) {
+        const destination = this.years[yearKey];
+        console.log(`🌀 AUTO: Initiating time travel to ${destination.display}`);
+        
+        // Pause slideshow
+        slideshow.pause();
+        
+        // Start wormhole
+        wormholeManager.start(destination.display);
+        
+        // Wait a dramatic moment (3-5 seconds of wormhole)
+        await this.wait(4000);
+        
+        // Complete the travel automatically
+        await wormholeManager.stop();
+        
+        // Go to new year
+        await this.goToYear(yearKey, true);
+    }
+    
+    /**
+     * Update the status text based on time of hour
+     */
+    updateStatusText(currentMinutes) {
+        // First 30 minutes of the hour: recharging
+        // Last 30 minutes of the hour: locked
+        const newStatus = currentMinutes < 30 
+            ? 'TEMPORAL CORE RECHARGING' 
+            : 'TEMPORAL COORDINATES LOCKED';
+        
+        // Only update if different (prevents constant DOM writes)
+        if (this.statusText.textContent !== newStatus) {
+            this.statusText.textContent = newStatus;
         }
     }
     
