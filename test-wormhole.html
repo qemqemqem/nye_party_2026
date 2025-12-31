@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wormhole Test</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="wormhole-container">
+        <div id="wormhole">
+            <div id="wormhole-stars"></div>
+            <div id="wormhole-nebula"></div>
+            <div id="wormhole-streaks"></div>
+            <div id="wormhole-center">
+                <div id="wormhole-core"></div>
+                <div class="tunnel-ring"></div><div class="tunnel-ring"></div><div class="tunnel-ring"></div>
+                <div class="tunnel-ring"></div><div class="tunnel-ring"></div><div class="tunnel-ring"></div>
+                <div class="tunnel-ring"></div><div class="tunnel-ring"></div><div class="tunnel-ring"></div>
+                <div class="tunnel-ring"></div><div class="tunnel-ring"></div><div class="tunnel-ring"></div>
+                <div class="tunnel-ring"></div><div class="tunnel-ring"></div><div class="tunnel-ring"></div>
+            </div>
+        </div>
+        <div id="wormhole-particles"></div>
+        <div id="destination-indicator">
+            <span class="destination-label">DESTINATION</span>
+            <span id="destination-year">1969 CE</span>
+        </div>
+    </div>
+    <script src="js/wormhole.js"></script>
+    <script>setTimeout(() => wormholeManager.startParticles(), 200);</script>
+</body>
+</html>

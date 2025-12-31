@@ -1,0 +1,950 @@
+/* ============================================
+   TIME MACHINE - COSMIC SCI-FI THEME
+   University of California, Oakland
+   Center for Quantum Chronodynamics
+   ============================================ */
+
+:root {
+    /* Core Colors */
+    --void-black: #0a0a12;
+    --deep-space: #0d0d1a;
+    --nebula-purple: #1a0a2e;
+    --cosmic-blue: #0a1628;
+    
+    /* Accent Colors */
+    --plasma-cyan: #00f0ff;
+    --energy-blue: #4d9fff;
+    --warp-purple: #9d4edd;
+    --temporal-gold: #ffd700;
+    --quantum-green: #00ff88;
+    
+    /* Glow Colors */
+    --glow-cyan: rgba(0, 240, 255, 0.6);
+    --glow-purple: rgba(157, 78, 221, 0.6);
+    --glow-gold: rgba(255, 215, 0, 0.5);
+    
+    /* Text */
+    --text-primary: #e0f0ff;
+    --text-secondary: #8899aa;
+    --text-dim: #445566;
+    
+    /* Fonts */
+    --font-display: 'Orbitron', monospace;
+    --font-body: 'Rajdhani', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--void-black);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+}
+
+/* ============================================
+   STARFIELD BACKGROUND
+   ============================================ */
+
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at center, var(--cosmic-blue) 0%, var(--void-black) 70%),
+        radial-gradient(ellipse at 20% 80%, var(--nebula-purple) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(77, 159, 255, 0.1) 0%, transparent 40%);
+    z-index: 0;
+}
+
+#starfield::before,
+#starfield::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 230px 80px, white, transparent),
+        radial-gradient(2px 2px at 300px 150px, rgba(200,220,255,0.8), transparent),
+        radial-gradient(1px 1px at 370px 60px, white, transparent),
+        radial-gradient(2px 2px at 450px 200px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 520px 90px, white, transparent),
+        radial-gradient(2px 2px at 600px 180px, rgba(220,200,255,0.8), transparent);
+    background-repeat: repeat;
+    background-size: 650px 250px;
+    animation: twinkle 8s ease-in-out infinite;
+}
+
+#starfield::after {
+    background-size: 400px 200px;
+    animation: twinkle 12s ease-in-out infinite reverse;
+    opacity: 0.7;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+/* ============================================
+   WATERMARK
+   ============================================ */
+
+#watermark {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 15px 22px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.watermark-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.watermark-text {
+    text-align: right;
+    border-right: 2px solid var(--plasma-cyan);
+    padding-right: 12px;
+}
+
+.watermark-university {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: 1.5px;
+    margin-bottom: 3px;
+}
+
+.watermark-dept {
+    font-size: 0.9rem;
+    color: #444466;
+    letter-spacing: 0.75px;
+}
+
+/* ============================================
+   MAIN CONTENT LAYOUT
+   ============================================ */
+
+#main-content {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================
+   YEAR DISPLAY
+   ============================================ */
+
+#year-display {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0px); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.year-frame {
+    text-align: center;
+    padding: 15px 40px;
+    background: rgba(10, 40, 80, 0.7);
+    border: 2px solid var(--plasma-cyan);
+    border-radius: 10px;
+    box-shadow: 
+        0 0 20px var(--glow-cyan),
+        inset 0 0 30px rgba(0, 240, 255, 0.05);
+    position: relative;
+}
+
+.year-frame::before,
+.year-frame::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--temporal-gold);
+    box-shadow: 0 0 5px var(--glow-gold);
+}
+
+.year-frame::before {
+    top: -5px;
+    left: -5px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.year-frame::after {
+    bottom: -5px;
+    right: -5px;
+    border-left: none;
+    border-top: none;
+}
+
+.year-label {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+}
+
+#year-value {
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    font-weight: 900;
+    color: var(--plasma-cyan);
+    text-shadow: 
+        0 0 10px var(--glow-cyan),
+        0 0 30px var(--glow-cyan),
+        0 0 50px rgba(0, 240, 255, 0.3);
+    letter-spacing: 8px;
+    line-height: 1;
+}
+
+#year-era {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--energy-blue);
+    letter-spacing: 5px;
+    margin-top: 5px;
+}
+
+/* ============================================
+   PORTAL / SLIDESHOW
+   ============================================ */
+
+#portal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#portal-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--deep-space);
+}
+
+#portal-glow {
+    display: none;
+}
+
+@keyframes portal-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+#slideshow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--void-black);
+    z-index: 2;
+}
+
+#slideshow-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    animation: ken-burns 20s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+#slideshow-image.active {
+    opacity: 1;
+}
+
+@keyframes ken-burns {
+    0% { transform: scale(1) translate(0, 0); }
+    50% { transform: scale(1.1) translate(-2%, -1%); }
+    100% { transform: scale(1) translate(0, 0); }
+}
+
+#slideshow-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 3;
+}
+
+#slideshow-video.active {
+    opacity: 1;
+}
+
+#portal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* ============================================
+   CLOCK DISPLAY
+   ============================================ */
+
+#clock-container {
+    position: fixed;
+    bottom: 120px;
+    right: 30px;
+    z-index: 25;
+    transition: all 0.5s ease-in-out;
+}
+
+#clock-time {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--plasma-cyan);
+    text-shadow: 0 0 10px var(--glow-cyan);
+    letter-spacing: 3px;
+    padding: 10px 20px;
+    background: rgba(0, 20, 40, 0.6);
+    border: 1px solid var(--plasma-cyan);
+    border-radius: 8px;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Countdown mode - big and centered */
+#clock-container.countdown-mode {
+    bottom: 50%;
+    right: 50%;
+    transform: translate(50%, 50%);
+}
+
+#clock-container.countdown-mode #clock-time {
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--temporal-gold);
+    text-shadow: 
+        0 0 20px var(--glow-gold),
+        0 0 40px var(--glow-gold),
+        0 0 80px rgba(255, 215, 0, 0.4);
+    border-color: var(--temporal-gold);
+    background: rgba(0, 20, 40, 0.85);
+    padding: 30px 50px;
+    border-width: 3px;
+    border-radius: 15px;
+    animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+@keyframes countdown-pulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 30px var(--glow-gold);
+    }
+    50% { 
+        transform: scale(1.02);
+        box-shadow: 0 0 50px var(--glow-gold), 0 0 80px rgba(255, 215, 0, 0.3);
+    }
+}
+
+/* ============================================
+   STATUS BAR
+   ============================================ */
+
+#status-bar {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    background: rgba(0, 20, 40, 0.7);
+    border: 1px solid var(--energy-blue);
+    border-radius: 20px;
+    z-index: 20;
+}
+
+#status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+#status-indicator.status-online {
+    background: var(--quantum-green);
+    box-shadow: 0 0 10px var(--quantum-green);
+}
+
+#status-indicator.status-traveling {
+    background: var(--warp-purple);
+    box-shadow: 0 0 10px var(--warp-purple);
+    animation: pulse-fast 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.9); }
+}
+
+@keyframes pulse-fast {
+    0%, 100% { opacity: 1; transform: scale(1.2); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+#status-text {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   FACTS TICKER
+   ============================================ */
+
+#ticker-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+}
+
+#ticker-border-top,
+#ticker-border-bottom {
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--plasma-cyan) 20%, 
+        var(--energy-blue) 50%, 
+        var(--plasma-cyan) 80%, 
+        transparent 100%);
+    box-shadow: 0 0 10px var(--glow-cyan);
+}
+
+#ticker {
+    background: rgba(0, 20, 40, 0.8);
+    padding: 12px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+#ticker::before,
+#ticker::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#ticker::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(10, 10, 18, 1) 0%, transparent 100%);
+}
+
+#ticker::after {
+    right: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(10, 10, 18, 1) 100%);
+}
+
+#ticker-content {
+    display: inline-flex;
+    white-space: nowrap;
+    will-change: transform;
+}
+
+/* Continuous scrolling animation - translates by 50% since content is duplicated */
+@keyframes scroll-ticker-continuous {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.ticker-facts {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    padding-right: 0;
+}
+
+/* Style the diamond separators */
+.ticker-facts {
+    color: var(--text-primary);
+}
+
+#facts-text {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   WORMHOLE ANIMATION
+   Inspired by cosmic vortex imagery
+   ============================================ */
+
+#wormhole-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    /* Deep space background - nearly pure black */
+    background: radial-gradient(ellipse at center, #050508 0%, #010102 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#wormhole-container.hidden {
+    display: none;
+}
+
+/* Starfield layer - scattered stars */
+#wormhole-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        /* Larger bright stars */
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2px 2px at 25% 45%, rgba(200,220,255,0.8), transparent),
+        radial-gradient(3px 3px at 40% 15%, rgba(255,255,255,1), transparent),
+        radial-gradient(2px 2px at 55% 70%, rgba(255,240,220,0.9), transparent),
+        radial-gradient(2px 2px at 70% 35%, rgba(220,200,255,0.8), transparent),
+        radial-gradient(3px 3px at 85% 60%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2px 2px at 15% 80%, rgba(200,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 90% 25%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 35% 90%, rgba(255,220,255,0.7), transparent),
+        radial-gradient(2px 2px at 60% 10%, rgba(255,255,255,0.9), transparent),
+        /* Smaller dim stars */
+        radial-gradient(1px 1px at 5% 35%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 18% 55%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 32% 28%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 48% 85%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 62% 42%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 92% 12%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 8% 92%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 45% 5%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 75% 95%, rgba(255,255,255,0.4), transparent);
+    animation: stars-twinkle 4s ease-in-out infinite alternate;
+    z-index: 1;
+}
+
+@keyframes stars-twinkle {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Nebula clouds layer - very subtle colored gas clouds */
+#wormhole-nebula {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        /* Purple/magenta nebula regions - very subtle */
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgba(120, 40, 140, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(100, 50, 150, 0.06) 0%, transparent 45%),
+        radial-gradient(ellipse 40% 30% at 70% 20%, rgba(140, 60, 180, 0.04) 0%, transparent 40%),
+        /* Blue nebula regions */
+        radial-gradient(ellipse 70% 50% at 30% 75%, rgba(40, 80, 160, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 45% 55% at 85% 40%, rgba(60, 100, 180, 0.04) 0%, transparent 45%),
+        /* Red/crimson accents */
+        radial-gradient(ellipse 30% 25% at 15% 60%, rgba(150, 40, 60, 0.04) 0%, transparent 40%),
+        radial-gradient(ellipse 25% 35% at 90% 85%, rgba(140, 50, 70, 0.03) 0%, transparent 35%);
+    animation: nebula-drift 20s ease-in-out infinite alternate;
+    z-index: 2;
+    will-change: transform, opacity;
+}
+
+@keyframes nebula-drift {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+    50% { transform: translate(20px, -15px) scale(1.02); opacity: 1; }
+    100% { transform: translate(-15px, 10px) scale(0.98); opacity: 0.9; }
+}
+
+/* Radial speed streaks - warp speed effect */
+#wormhole-streaks {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200vmax;
+    height: 200vmax;
+    transform: translate(-50%, -50%);
+    background: 
+        /* Cyan streaks */
+        repeating-conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            transparent 8deg,
+            rgba(0, 220, 255, 0.03) 9deg,
+            transparent 10deg,
+            transparent 24deg
+        ),
+        /* Purple streaks */
+        repeating-conic-gradient(
+            from 5deg,
+            transparent 0deg,
+            transparent 14deg,
+            rgba(150, 100, 255, 0.025) 15deg,
+            transparent 16deg,
+            transparent 36deg
+        );
+    animation: streaks-rotate 30s linear infinite;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+@keyframes streaks-rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+#wormhole {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    z-index: 10;
+}
+
+/* The wiggle origin - shifts where the "center" of the wormhole is */
+#wormhole-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    animation: wormhole-wiggle 12s ease-in-out infinite;
+    will-change: transform;
+}
+
+@keyframes wormhole-wiggle {
+    0% { transform: translate(0, 0); }
+    12% { transform: translate(60px, -30px); }
+    25% { transform: translate(-40px, -60px); }
+    37% { transform: translate(-80px, 15px); }
+    50% { transform: translate(30px, 50px); }
+    62% { transform: translate(70px, -15px); }
+    75% { transform: translate(-25px, 40px); }
+    87% { transform: translate(-50px, -20px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Glowing golden/cream center core with fiery orange/red accent */
+#wormhole-core {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 240, 200, 1) 15%,
+        rgba(255, 180, 120, 0.95) 30%,
+        rgba(255, 120, 60, 0.7) 50%,
+        rgba(200, 80, 40, 0.4) 70%,
+        rgba(150, 50, 30, 0.15) 85%,
+        transparent 100%
+    );
+    box-shadow: 
+        /* Inner fiery glow */
+        0 0 30px rgba(255, 150, 50, 0.9),
+        0 0 60px rgba(255, 120, 40, 0.7),
+        /* Outer warm glow */
+        0 0 100px rgba(255, 180, 100, 0.5),
+        0 0 180px rgba(255, 150, 80, 0.3),
+        0 0 280px rgba(200, 120, 60, 0.2);
+    animation: core-pulse 2.5s ease-in-out infinite alternate;
+    z-index: 100;
+    will-change: transform, opacity;
+}
+
+@keyframes core-pulse {
+    0% { 
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.9;
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+    }
+}
+
+.tunnel-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    /* Fixed border - not animated (layout is expensive) */
+    border: 1.5px solid var(--ring-color);
+    /* Single box-shadow for glow - kept simple for performance */
+    box-shadow: 0 0 6px var(--ring-glow), 0 0 12px var(--ring-glow-outer);
+    transform: translate(-50%, -50%) scale(1);
+    animation: ring-expand 6s ease-in infinite;
+    background: transparent;
+    will-change: transform, opacity;
+}
+
+/* Stagger the rings evenly through the 6s cycle - 15 rings */
+/* nth-child(2) because nth-child(1) is #wormhole-core */
+.tunnel-ring:nth-child(2) { animation-delay: 0s; }
+.tunnel-ring:nth-child(3) { animation-delay: -0.4s; }
+.tunnel-ring:nth-child(4) { animation-delay: -0.8s; }
+.tunnel-ring:nth-child(5) { animation-delay: -1.2s; }
+.tunnel-ring:nth-child(6) { animation-delay: -1.6s; }
+.tunnel-ring:nth-child(7) { animation-delay: -2.0s; }
+.tunnel-ring:nth-child(8) { animation-delay: -2.4s; }
+.tunnel-ring:nth-child(9) { animation-delay: -2.8s; }
+.tunnel-ring:nth-child(10) { animation-delay: -3.2s; }
+.tunnel-ring:nth-child(11) { animation-delay: -3.6s; }
+.tunnel-ring:nth-child(12) { animation-delay: -4.0s; }
+.tunnel-ring:nth-child(13) { animation-delay: -4.4s; }
+.tunnel-ring:nth-child(14) { animation-delay: -4.8s; }
+.tunnel-ring:nth-child(15) { animation-delay: -5.2s; }
+.tunnel-ring:nth-child(16) { animation-delay: -5.6s; }
+
+/* Color gradient from warm center to cool edges (15 rings) */
+/* Early rings (small/center) - warm golden/cream tones */
+.tunnel-ring:nth-child(2),
+.tunnel-ring:nth-child(3),
+.tunnel-ring:nth-child(4) { 
+    --ring-color: rgba(255, 245, 220, 0.95);
+    --ring-glow: rgba(255, 235, 190, 0.5);
+    --ring-glow-outer: rgba(255, 220, 170, 0.25);
+}
+
+/* Transition to blue */
+.tunnel-ring:nth-child(5),
+.tunnel-ring:nth-child(6) { 
+    --ring-color: rgba(200, 220, 255, 0.9);
+    --ring-glow: rgba(180, 200, 255, 0.45);
+    --ring-glow-outer: rgba(160, 180, 255, 0.2);
+}
+
+/* Middle rings - blue/cyan tones */
+.tunnel-ring:nth-child(7),
+.tunnel-ring:nth-child(8),
+.tunnel-ring:nth-child(9) { 
+    --ring-color: rgba(120, 180, 255, 0.85);
+    --ring-glow: rgba(100, 160, 255, 0.4);
+    --ring-glow-outer: rgba(80, 140, 255, 0.18);
+}
+
+/* Transition to purple */
+.tunnel-ring:nth-child(10),
+.tunnel-ring:nth-child(11),
+.tunnel-ring:nth-child(12) { 
+    --ring-color: rgba(140, 130, 240, 0.8);
+    --ring-glow: rgba(120, 110, 220, 0.35);
+    --ring-glow-outer: rgba(100, 90, 200, 0.15);
+}
+
+/* Outer rings - purple/violet tones */
+.tunnel-ring:nth-child(13),
+.tunnel-ring:nth-child(14),
+.tunnel-ring:nth-child(15),
+.tunnel-ring:nth-child(16) { 
+    --ring-color: rgba(130, 90, 190, 0.7);
+    --ring-glow: rgba(110, 70, 170, 0.3);
+    --ring-glow-outer: rgba(90, 50, 140, 0.12);
+}
+
+/* Rings spawn small at center and expand outward using GPU-accelerated transform */
+/* PERFORMANCE: Only animate transform & opacity (compositor-only, no layout) */
+@keyframes ring-expand {
+    0% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+    8% {
+        opacity: 0.9;
+    }
+    20% { 
+        opacity: 1;
+    }
+    50% { 
+        opacity: 0.85;
+    }
+    75% {
+        opacity: 0.5;
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(150);
+        opacity: 0;
+    }
+}
+
+#wormhole-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Particle streaks - small glowing dots that fly past */
+.wormhole-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(200,220,255,0.5) 50%, transparent 100%);
+    animation: particle-fly linear infinite;
+    pointer-events: none;
+}
+
+@keyframes particle-fly {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(15);
+        opacity: 0;
+    }
+}
+
+#destination-indicator {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 101;
+}
+
+.destination-label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 4px;
+    margin-bottom: 5px;
+}
+
+#destination-year {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--temporal-gold);
+    text-shadow: 
+        0 0 10px var(--glow-gold),
+        0 0 30px var(--glow-gold);
+    letter-spacing: 5px;
+    animation: destination-glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes destination-glow {
+    from { 
+        text-shadow: 0 0 10px var(--glow-gold), 0 0 30px var(--glow-gold);
+    }
+    to { 
+        text-shadow: 0 0 20px var(--glow-gold), 0 0 50px var(--glow-gold), 0 0 80px var(--glow-gold);
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
