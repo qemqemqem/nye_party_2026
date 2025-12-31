@@ -979,6 +979,26 @@ html, body {
     opacity: 0.85;
 }
 
+/* Logo Shake - UCO logo vibrates with random intensity */
+.glitch-shake {
+    /* Duration divided by speed for faster shakes, iterations increased */
+    animation: glitch-shake-anim calc(var(--shake-duration, 500ms) / var(--shake-speed, 1)) linear infinite;
+}
+
+/* Base shake values get multiplied by intensity (1-3) */
+@keyframes glitch-shake-anim {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(calc(-3px * var(--shake-intensity, 1)), calc(-2px * var(--shake-intensity, 1))) rotate(calc(-1deg * var(--shake-intensity, 1))); }
+    20% { transform: translate(calc(4px * var(--shake-intensity, 1)), calc(2px * var(--shake-intensity, 1))) rotate(calc(1.5deg * var(--shake-intensity, 1))); }
+    30% { transform: translate(calc(-5px * var(--shake-intensity, 1)), calc(1px * var(--shake-intensity, 1))) rotate(calc(-0.5deg * var(--shake-intensity, 1))); }
+    40% { transform: translate(calc(3px * var(--shake-intensity, 1)), calc(-3px * var(--shake-intensity, 1))) rotate(calc(2deg * var(--shake-intensity, 1))); }
+    50% { transform: translate(calc(-4px * var(--shake-intensity, 1)), calc(2px * var(--shake-intensity, 1))) rotate(calc(-1.5deg * var(--shake-intensity, 1))); }
+    60% { transform: translate(calc(5px * var(--shake-intensity, 1)), calc(-1px * var(--shake-intensity, 1))) rotate(calc(1deg * var(--shake-intensity, 1))); }
+    70% { transform: translate(calc(-2px * var(--shake-intensity, 1)), calc(4px * var(--shake-intensity, 1))) rotate(calc(-2deg * var(--shake-intensity, 1))); }
+    80% { transform: translate(calc(3px * var(--shake-intensity, 1)), calc(-2px * var(--shake-intensity, 1))) rotate(calc(0.5deg * var(--shake-intensity, 1))); }
+    90% { transform: translate(calc(-1px * var(--shake-intensity, 1)), calc(1px * var(--shake-intensity, 1))) rotate(calc(-0.5deg * var(--shake-intensity, 1))); }
+}
+
 /* RGB Split - chromatic aberration effect */
 .glitch-rgb-split {
     animation: glitch-rgb-anim 300ms steps(3) forwards;

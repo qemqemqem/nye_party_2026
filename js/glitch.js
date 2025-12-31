@@ -193,6 +193,33 @@ class GlitchManager {
     }
     
     /**
+     * Logo shake effect - UCO logo shakes/vibrates
+     */
+    doLogoShake() {
+        const logo = document.querySelector('.watermark-logo');
+        if (!logo) return;
+        
+        // Random duration between 500-1500ms
+        const duration = this.randomRange(500, 1500);
+        
+        // Random intensity: 1 = subtle, 2 = medium, 3 = intense
+        const intensity = this.randomRange(1, 3);
+        
+        // Random speed multiplier (faster = more frantic)
+        const speed = this.randomRange(1, 3);
+        
+        // Set CSS variables
+        logo.style.setProperty('--shake-duration', `${duration}ms`);
+        logo.style.setProperty('--shake-intensity', intensity);
+        logo.style.setProperty('--shake-speed', speed);
+        logo.classList.add('glitch-shake');
+        
+        setTimeout(() => {
+            logo.classList.remove('glitch-shake');
+        }, duration);
+    }
+    
+    /**
      * Text scramble effect - corrupts text briefly
      */
     doTextScramble() {
@@ -301,6 +328,9 @@ class GlitchManager {
                 break;
             case 'textScramble':
                 this.doTextScramble();
+                break;
+            case 'logoShake':
+                this.doLogoShake();
                 break;
             default:
                 console.warn(`Unknown effect: ${effectName}`);
