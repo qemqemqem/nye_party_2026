@@ -48,6 +48,9 @@ class TimeMachine {
         // Start chimes
         chimesManager.start();
         
+        // Start glitch effects
+        glitchManager.start();
+        
         // Start clock
         this.startClock();
         
@@ -130,6 +133,11 @@ class TimeMachine {
             if (e.key === 'b' || e.key === 'B') {
                 const hour = new Date().getHours() % 12 || 12;
                 chimesManager.testChime(hour);
+            }
+            
+            // G for glitch test - triggers a random glitch
+            if (e.key === 'g' || e.key === 'G') {
+                glitchManager.triggerRandomGlitch();
             }
         });
         
@@ -217,9 +225,13 @@ class TimeMachine {
         const facts = this.facts[folder] || ['No data available.'];
         const tickerContent = document.getElementById('ticker-content');
         
+        // Shuffle facts for random order each time
+        const shuffledFacts = [...facts];
+        this.shuffleArray(shuffledFacts);
+        
         // Build continuous ticker content: all facts with separators, duplicated for seamless loop
         const separator = ' ◆ ';
-        const allFacts = facts.join(separator) + separator;
+        const allFacts = shuffledFacts.join(separator) + separator;
         
         // Clear existing content and add two copies for seamless loop
         tickerContent.innerHTML = '';
@@ -237,7 +249,7 @@ class TimeMachine {
         
         // Calculate animation duration based on content length
         // Fast enough to be dynamic, slow enough to read
-        const charWidth = 8; // Approximate pixels per character at 1.1rem
+        const charWidth = 10; // Approximate pixels per character at 1.4rem
         const contentWidth = allFacts.length * charWidth;
         const scrollSpeed = 150; // pixels per second - brisk news ticker pace
         const duration = contentWidth / scrollSpeed;
@@ -289,6 +301,16 @@ class TimeMachine {
      */
     wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    /**
+     * Utility: shuffle array in place (Fisher-Yates)
+     */
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
 }
 

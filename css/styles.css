@@ -367,9 +367,45 @@ html, body {
 
 /* Countdown mode - big and centered */
 #clock-container.countdown-mode {
-    bottom: 50%;
-    right: 50%;
-    transform: translate(50%, 50%);
+    /* Center using inset positioning */
+    bottom: auto;
+    right: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Box styling on container so warning is inside */
+    background: rgba(0, 20, 40, 0.85);
+    border: 3px solid var(--temporal-gold);
+    border-radius: 15px;
+    padding: 30px 50px;
+    text-align: center;
+    box-shadow: 0 0 30px var(--glow-gold);
+}
+
+/* Temporal warning - hidden by default */
+#temporal-warning {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffdd00;
+    text-align: center;
+    letter-spacing: 0.15em;
+    text-shadow: 
+        0 0 10px #ffdd00,
+        0 0 20px rgba(255, 221, 0, 0.5);
+    margin-bottom: 10px;
+    animation: warning-pulse 1.5s ease-in-out infinite;
+}
+
+/* Show warning in countdown mode */
+#clock-container.countdown-mode #temporal-warning {
+    display: block;
+}
+
+@keyframes warning-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
 }
 
 #clock-container.countdown-mode #clock-time {
@@ -380,22 +416,22 @@ html, body {
         0 0 20px var(--glow-gold),
         0 0 40px var(--glow-gold),
         0 0 80px rgba(255, 215, 0, 0.4);
-    border-color: var(--temporal-gold);
-    background: rgba(0, 20, 40, 0.85);
-    padding: 30px 50px;
-    border-width: 3px;
-    border-radius: 15px;
+    /* Remove box styling from time element - now on container */
+    background: none;
+    border: none;
+    padding: 0;
+    /* Pulse animation on text only */
     animation: countdown-pulse 1s ease-in-out infinite;
 }
 
 @keyframes countdown-pulse {
     0%, 100% { 
         transform: scale(1);
-        box-shadow: 0 0 30px var(--glow-gold);
+        filter: brightness(1);
     }
     50% { 
         transform: scale(1.02);
-        box-shadow: 0 0 50px var(--glow-gold), 0 0 80px rgba(255, 215, 0, 0.3);
+        filter: brightness(1.1);
     }
 }
 
@@ -467,7 +503,7 @@ html, body {
 
 #ticker-border-top,
 #ticker-border-bottom {
-    height: 2px;
+    height: 3px;
     background: linear-gradient(90deg, 
         transparent 0%, 
         var(--plasma-cyan) 20%, 
@@ -479,7 +515,7 @@ html, body {
 
 #ticker {
     background: rgba(0, 20, 40, 0.8);
-    padding: 12px 0;
+    padding: 15px 0;
     overflow: hidden;
     position: relative;
 }
@@ -490,7 +526,7 @@ html, body {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 100px;
+    width: 115px;
     z-index: 10;
     pointer-events: none;
 }
@@ -519,10 +555,10 @@ html, body {
 
 .ticker-facts {
     font-family: var(--font-body);
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     font-weight: 500;
     color: var(--text-primary);
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     padding-right: 0;
 }
 
@@ -533,10 +569,10 @@ html, body {
 
 #facts-text {
     font-family: var(--font-body);
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     font-weight: 500;
     color: var(--text-primary);
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
 
 /* ============================================
@@ -930,4 +966,120 @@ html, body {
 @keyframes fadeOut {
     from { opacity: 1; }
     to { opacity: 0; }
+}
+
+/* ============================================
+   GLITCH EFFECTS
+   Temporal instability visual effects
+   ============================================ */
+
+/* Screen Flicker - toggled on/off by JS for organic flicker effect */
+.glitch-flicker {
+    filter: brightness(0.4);
+    opacity: 0.85;
+}
+
+/* RGB Split - chromatic aberration effect */
+.glitch-rgb-split {
+    animation: glitch-rgb-anim 300ms steps(3) forwards;
+}
+
+@keyframes glitch-rgb-anim {
+    0% {
+        text-shadow: none;
+        filter: none;
+    }
+    25% {
+        filter: none;
+    }
+    50% {
+        filter: none;
+    }
+    100% {
+        filter: none;
+    }
+}
+
+/* RGB split uses a pseudo-element overlay for the color separation effect */
+.glitch-rgb-split::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 9999;
+    animation: glitch-rgb-overlay var(--rgb-glitch-duration, 500ms) steps(5) forwards;
+    mix-blend-mode: screen;
+}
+
+@keyframes glitch-rgb-overlay {
+    0% {
+        box-shadow: 
+            inset -6px 0 0 rgba(255, 0, 0, 0.5),
+            inset 6px 0 0 rgba(0, 255, 255, 0.5);
+        transform: translateX(0);
+    }
+    33% {
+        box-shadow: 
+            inset 8px 0 0 rgba(255, 0, 0, 0.6),
+            inset -8px 0 0 rgba(0, 255, 255, 0.6);
+        transform: translateX(-3px);
+    }
+    66% {
+        box-shadow: 
+            inset -10px 0 0 rgba(255, 0, 0, 0.5),
+            inset 10px 0 0 rgba(0, 255, 255, 0.5);
+        transform: translateX(4px);
+    }
+    100% {
+        box-shadow: none;
+        transform: translateX(0);
+    }
+}
+
+/* Additional RGB effect on key text elements during glitch */
+.glitch-rgb-split #year-value,
+.glitch-rgb-split #clock-time,
+.glitch-rgb-split #destination-year {
+    animation: glitch-text-rgb var(--rgb-glitch-duration, 500ms) steps(6) forwards;
+}
+
+@keyframes glitch-text-rgb {
+    0% {
+        text-shadow: 
+            -4px 0 rgba(255, 0, 0, 0.8),
+            4px 0 rgba(0, 255, 255, 0.8),
+            0 0 10px var(--glow-cyan);
+    }
+    25% {
+        text-shadow: 
+            6px 0 rgba(255, 0, 0, 0.9),
+            -6px 0 rgba(0, 255, 255, 0.9),
+            0 0 10px var(--glow-cyan);
+        transform: translateX(-2px);
+    }
+    50% {
+        text-shadow: 
+            -8px 0 rgba(255, 0, 0, 0.7),
+            8px 0 rgba(0, 255, 255, 0.7),
+            0 0 10px var(--glow-cyan);
+        transform: translateX(3px);
+    }
+    75% {
+        text-shadow: 
+            5px 0 rgba(255, 0, 0, 0.6),
+            -5px 0 rgba(0, 255, 255, 0.6),
+            0 0 10px var(--glow-cyan);
+        transform: translateX(-1px);
+    }
+    100% {
+        text-shadow: 
+            0 0 10px var(--glow-cyan),
+            0 0 30px var(--glow-cyan),
+            0 0 50px rgba(0, 240, 255, 0.3);
+        transform: translateX(0);
+    }
 }
