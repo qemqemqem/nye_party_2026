@@ -106,44 +106,46 @@ html, body {
 
 #watermark {
     position: fixed;
-    top: 20px;
-    right: 25px;
+    top: 15px;
+    right: 15px;
     display: flex;
     align-items: center;
-    gap: 18px;
     z-index: 20;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 15px 22px;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 12px 18px;
+    border-radius: 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .watermark-logo {
-    width: 90px;
-    height: 90px;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 252px;
+    height: 252px;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 21;
 }
 
 .watermark-text {
     text-align: right;
     border-right: 2px solid var(--plasma-cyan);
-    padding-right: 12px;
+    padding-right: 18px;
 }
 
 .watermark-university {
     font-family: var(--font-display);
     font-size: 1.05rem;
     font-weight: 700;
-    color: #1a1a2e;
+    color: #000000;
     letter-spacing: 1.5px;
     margin-bottom: 3px;
 }
 
 .watermark-dept {
     font-size: 0.9rem;
-    color: #444466;
+    color: #000000;
     letter-spacing: 0.75px;
 }
 
@@ -660,6 +662,7 @@ html, body {
     z-index: 3;
     pointer-events: none;
     opacity: 0.7;
+    will-change: transform;
 }
 
 @keyframes streaks-rotate {
@@ -671,7 +674,6 @@ html, body {
     position: relative;
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
     z-index: 10;
 }
 
@@ -682,7 +684,6 @@ html, body {
     left: 50%;
     width: 0;
     height: 0;
-    transform-style: preserve-3d;
     animation: wormhole-wiggle 12s ease-in-out infinite;
     will-change: transform;
 }
@@ -746,85 +747,67 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    /* Larger initial size = less extreme scaling = smoother edges */
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    /* Fixed border - not animated (layout is expensive) */
-    border: 1.5px solid var(--ring-color);
-    /* Single box-shadow for glow - kept simple for performance */
-    box-shadow: 0 0 6px var(--ring-glow), 0 0 12px var(--ring-glow-outer);
-    transform: translate(-50%, -50%) scale(1);
-    animation: ring-expand 6s ease-in infinite;
+    border: 3px solid var(--ring-color);
     background: transparent;
+    box-shadow: 0 0 8px var(--ring-glow), 0 0 16px var(--ring-glow-outer);
+    transform: translate(-50%, -50%) scale(1);
+    animation: ring-expand 4s ease-in infinite;
     will-change: transform, opacity;
 }
 
-/* Stagger the rings evenly through the 6s cycle - 15 rings */
+/* Stagger rings through 4s cycle - wider spacing = more black between rings */
 /* nth-child(2) because nth-child(1) is #wormhole-core */
 .tunnel-ring:nth-child(2) { animation-delay: 0s; }
-.tunnel-ring:nth-child(3) { animation-delay: -0.4s; }
-.tunnel-ring:nth-child(4) { animation-delay: -0.8s; }
-.tunnel-ring:nth-child(5) { animation-delay: -1.2s; }
-.tunnel-ring:nth-child(6) { animation-delay: -1.6s; }
-.tunnel-ring:nth-child(7) { animation-delay: -2.0s; }
-.tunnel-ring:nth-child(8) { animation-delay: -2.4s; }
-.tunnel-ring:nth-child(9) { animation-delay: -2.8s; }
-.tunnel-ring:nth-child(10) { animation-delay: -3.2s; }
-.tunnel-ring:nth-child(11) { animation-delay: -3.6s; }
-.tunnel-ring:nth-child(12) { animation-delay: -4.0s; }
-.tunnel-ring:nth-child(13) { animation-delay: -4.4s; }
-.tunnel-ring:nth-child(14) { animation-delay: -4.8s; }
-.tunnel-ring:nth-child(15) { animation-delay: -5.2s; }
-.tunnel-ring:nth-child(16) { animation-delay: -5.6s; }
+.tunnel-ring:nth-child(3) { animation-delay: -0.5s; }
+.tunnel-ring:nth-child(4) { animation-delay: -1.0s; }
+.tunnel-ring:nth-child(5) { animation-delay: -1.5s; }
+.tunnel-ring:nth-child(6) { animation-delay: -2.0s; }
+.tunnel-ring:nth-child(7) { animation-delay: -2.5s; }
+.tunnel-ring:nth-child(8) { animation-delay: -3.0s; }
+.tunnel-ring:nth-child(9) { animation-delay: -3.5s; }
+/* Remaining rings hidden - only 8 visible for more spacing */
+.tunnel-ring:nth-child(n+10) { display: none; }
 
-/* Color gradient from warm center to cool edges (15 rings) */
-/* Early rings (small/center) - warm golden/cream tones */
+/* Color gradient from warm center to cool edges (8 visible rings) */
+/* Inner rings - warm golden/cream tones */
 .tunnel-ring:nth-child(2),
-.tunnel-ring:nth-child(3),
-.tunnel-ring:nth-child(4) { 
+.tunnel-ring:nth-child(3) { 
     --ring-color: rgba(255, 245, 220, 0.95);
     --ring-glow: rgba(255, 235, 190, 0.5);
     --ring-glow-outer: rgba(255, 220, 170, 0.25);
 }
 
-/* Transition to blue */
-.tunnel-ring:nth-child(5),
-.tunnel-ring:nth-child(6) { 
-    --ring-color: rgba(200, 220, 255, 0.9);
-    --ring-glow: rgba(180, 200, 255, 0.45);
-    --ring-glow-outer: rgba(160, 180, 255, 0.2);
+/* Transition rings - light blue */
+.tunnel-ring:nth-child(4),
+.tunnel-ring:nth-child(5) { 
+    --ring-color: rgba(180, 210, 255, 0.9);
+    --ring-glow: rgba(160, 190, 255, 0.45);
+    --ring-glow-outer: rgba(140, 170, 255, 0.2);
 }
 
 /* Middle rings - blue/cyan tones */
-.tunnel-ring:nth-child(7),
-.tunnel-ring:nth-child(8),
-.tunnel-ring:nth-child(9) { 
-    --ring-color: rgba(120, 180, 255, 0.85);
-    --ring-glow: rgba(100, 160, 255, 0.4);
-    --ring-glow-outer: rgba(80, 140, 255, 0.18);
-}
-
-/* Transition to purple */
-.tunnel-ring:nth-child(10),
-.tunnel-ring:nth-child(11),
-.tunnel-ring:nth-child(12) { 
-    --ring-color: rgba(140, 130, 240, 0.8);
-    --ring-glow: rgba(120, 110, 220, 0.35);
-    --ring-glow-outer: rgba(100, 90, 200, 0.15);
+.tunnel-ring:nth-child(6),
+.tunnel-ring:nth-child(7) { 
+    --ring-color: rgba(120, 170, 255, 0.85);
+    --ring-glow: rgba(100, 150, 255, 0.4);
+    --ring-glow-outer: rgba(80, 130, 255, 0.18);
 }
 
 /* Outer rings - purple/violet tones */
-.tunnel-ring:nth-child(13),
-.tunnel-ring:nth-child(14),
-.tunnel-ring:nth-child(15),
-.tunnel-ring:nth-child(16) { 
-    --ring-color: rgba(130, 90, 190, 0.7);
-    --ring-glow: rgba(110, 70, 170, 0.3);
-    --ring-glow-outer: rgba(90, 50, 140, 0.12);
+.tunnel-ring:nth-child(8),
+.tunnel-ring:nth-child(9) { 
+    --ring-color: rgba(140, 110, 220, 0.8);
+    --ring-glow: rgba(120, 90, 200, 0.35);
+    --ring-glow-outer: rgba(100, 70, 180, 0.15);
 }
 
 /* Rings spawn small at center and expand outward using GPU-accelerated transform */
 /* PERFORMANCE: Only animate transform & opacity (compositor-only, no layout) */
+/* Scale factor reduced (50x vs 150x) because initial size is larger - reduces aliasing */
 @keyframes ring-expand {
     0% { 
         transform: translate(-50%, -50%) scale(1);
@@ -843,7 +826,7 @@ html, body {
         opacity: 0.5;
     }
     100% { 
-        transform: translate(-50%, -50%) scale(150);
+        transform: translate(-50%, -50%) scale(50);
         opacity: 0;
     }
 }

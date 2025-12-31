@@ -21,10 +21,10 @@ class ChimesManager {
         // Check immediately
         this.checkTime();
         
-        // Check every 30 seconds
+        // Check every second for precise hourly chimes
         this.checkInterval = setInterval(() => {
             this.checkTime();
-        }, 30000);
+        }, 1000);
         
         console.log('⏰ Chimes manager started');
     }

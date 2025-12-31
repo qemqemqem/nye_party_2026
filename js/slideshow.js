@@ -43,6 +43,9 @@ class SlideshowManager {
             });
         }
         
+        // Shuffle for random playback order
+        this.shuffleArray(this.mediaItems);
+        
         // If no media, show placeholder
         if (this.mediaItems.length === 0) {
             this.showPlaceholder();
@@ -196,6 +199,16 @@ class SlideshowManager {
             this.videoElement.play();
         }
         this.startAutoAdvance();
+    }
+    
+    /**
+     * Shuffle array in place (Fisher-Yates)
+     */
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
 }
 

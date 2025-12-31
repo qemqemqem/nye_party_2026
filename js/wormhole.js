@@ -3,12 +3,10 @@
  * Handles the time travel tunnel effect
  */
 
-// Configuration flags
+// Configuration
 const WORMHOLE_CONFIG = {
-    showRings: false,        // Toggle tunnel rings on/off (false = disabled due to pixelization)
-    showParticles: true,     // Toggle particle effects
-    showCore: true,          // Toggle center core glow
-    particlesPerSecond: 100, // Particle spawn rate
+    showParticles: true,      // Enable/disable particle effects
+    particlesPerSecond: 30,   // Particle spawn rate (100 is heavy, 30 is smooth)
 };
 
 class WormholeManager {
@@ -26,26 +24,6 @@ class WormholeManager {
         this.currentRotation = 0;
         this.targetYear = null;
         this.synthWormhole = null; // For synth audio controller
-        
-        // Apply config on load
-        this.applyConfig();
-    }
-    
-    /**
-     * Apply configuration flags
-     */
-    applyConfig() {
-        // Hide rings if disabled
-        if (!WORMHOLE_CONFIG.showRings) {
-            const rings = document.querySelectorAll('.tunnel-ring');
-            rings.forEach(ring => ring.style.display = 'none');
-        }
-        
-        // Hide core if disabled
-        if (!WORMHOLE_CONFIG.showCore) {
-            const core = document.getElementById('wormhole-core');
-            if (core) core.style.display = 'none';
-        }
     }
     
     /**
