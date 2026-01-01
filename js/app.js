@@ -21,17 +21,6 @@ class TimeMachine {
         this.facts = {};
         this.isInitialized = false;
         
-        // Scheduled automatic time travel (hour -> yearKey)
-        this.schedule = {
-            20: 1,  // 8pm  → 2025
-            21: 2,  // 9pm  → 1969
-            22: 3,  // 10pm → 1751
-            23: 4,  // 11pm → 423 BCE
-            0:  5,  // Midnight → 2026
-            12: 4   // Noon → 423 BCE (testing)
-        };
-        this.lastScheduledHour = null; // Track which hour we last triggered
-        
         // DOM elements
         this.yearValue = document.getElementById('year-value');
         this.yearEra = document.getElementById('year-era');
@@ -342,62 +331,6 @@ class TimeMachine {
         
         // Update status text based on time of hour
         this.updateStatusText(currentMinutes);
-        
-        // Check for scheduled automatic time travel
-        this.checkScheduledTravel(now.getHours());
-    }
-    
-    /**
-     * Check if we should trigger automatic time travel based on schedule
-     */
-    checkScheduledTravel(currentHour) {
-        // Skip if wormhole is already active
-        if (wormholeManager.isRunning()) return;
-        
-        // Check if this hour has a scheduled destination
-        const scheduledYearKey = this.schedule[currentHour];
-        if (scheduledYearKey === undefined) {
-            // No schedule for this hour, reset tracker
-            this.lastScheduledHour = null;
-            return;
-        }
-        
-        // Skip if we already triggered for this hour
-        if (this.lastScheduledHour === currentHour) return;
-        
-        // Skip if we're already at the destination
-        if (this.currentYearKey === scheduledYearKey) {
-            this.lastScheduledHour = currentHour;
-            return;
-        }
-        
-        // Trigger automatic time travel!
-        console.log(`🕐 Scheduled time travel triggered: hour ${currentHour} → year key ${scheduledYearKey}`);
-        this.lastScheduledHour = currentHour;
-        this.initiateAutomaticTimeTravel(scheduledYearKey);
-    }
-    
-    /**
-     * Initiate automatic time travel (no spacebar required)
-     */
-    async initiateAutomaticTimeTravel(yearKey) {
-        const destination = this.years[yearKey];
-        console.log(`🌀 AUTO: Initiating time travel to ${destination.display}`);
-        
-        // Pause slideshow
-        slideshow.pause();
-        
-        // Start wormhole
-        wormholeManager.start(destination.display);
-        
-        // Wait a dramatic moment (3-5 seconds of wormhole)
-        await this.wait(4000);
-        
-        // Complete the travel automatically
-        await wormholeManager.stop();
-        
-        // Go to new year
-        await this.goToYear(yearKey, true);
     }
     
     /**
